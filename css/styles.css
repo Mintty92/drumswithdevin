@@ -1,0 +1,469 @@
+/* SCSS/styles.scss */
+:root {
+  --navbar-height: 60px; /* Define your navbar height here */
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  padding-top: var(--navbar-height);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Georgia", serif;
+}
+
+.p-bold {
+}
+
+section {
+  padding: 60px 0;
+}
+
+.min-vh-100 {
+  min-height: calc(100vh - 60px);
+}
+
+.navbar {
+  min-height: var(--navbar-height);
+  background-color: #081729;
+  color: #ffffff;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus,
+.navbar-dark .navbar-nav .nav-link.active {
+  color: #ffffff;
+}
+
+.navbar-nav .nav-link i {
+  font-size: 1.2rem;
+  vertical-align: middle;
+}
+
+.min-vh-100 {
+  min-height: calc(100vh - var(--navbar-height)) !important;
+}
+
+.btn-light {
+  background-color: #be3d2a;
+  color: #ffffff;
+  border-color: #be3e2a79;
+}
+
+.btn-light:hover,
+.btn-light:focus,
+.btn-light:active,
+.btn-light.active {
+  color: #081729;
+  background-color: #bf7a70;
+  border-color: #be3e2a79; /*set the color you want here*/
+}
+
+#home img {
+  max-width: 300px;
+}
+
+#home video {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  object-fit: cover;
+}
+
+#home::after {
+  width: 100%;
+  height: 100%;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 6;
+}
+
+#home .texture {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 7;
+  background: url("../media/texture.png");
+}
+
+#home .container {
+  z-index: 10;
+}
+
+#home p {
+  padding-top: 15px;
+}
+
+.move-up {
+  margin-top: -5px;
+}
+
+#bio .img-fluid.rounded-circle {
+  border: 5px solid #eee;
+}
+
+#videos iframe {
+  border: 2px solid #be3d2a;
+}
+
+#videos {
+  background-color: #f5c45e;
+}
+
+#videos h1 {
+  font-family: "Cal Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #be3d2a;
+}
+
+#contact .social-icons-contact a {
+  transition: color 0.2s ease-in-out;
+}
+
+#contact .social-icons-contact a:hover {
+  color: var(--bs-primary) !important;
+}
+
+footer .social-icons-footer a {
+  font-size: 1.3rem;
+  transition: color 0.2s ease-in-out;
+}
+
+footer .social-icons-footer a:hover {
+  color: #ccc !important;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding: 80px 0;
+  }
+
+  #home h1 {
+    font-size: 4rem;
+  }
+
+  #bio .p-md-5 {
+    padding: 1rem !important;
+  }
+}
+
+#contactForm input {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
+
+#contactForm textarea {
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  border-radius: 0 !important;
+}
+
+@media (min-width: 992px) {
+  section {
+    padding: 100px 0;
+  }
+
+  #home h1 {
+    font-size: 5rem;
+  }
+
+  .bio-content-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .bio-container {
+    max-width: 640px;
+  }
+}
+
+.youtube-player-container #youtube-playlist-player {
+  min-height: 200px;
+  background-color: #eee;
+  width: 100%;
+}
+
+.youtube-player-container .player-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.youtube-player-container .player-nav-btn:hover {
+  opacity: 1;
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+}
+
+.youtube-player-container .player-nav-btn.prev {
+  left: -20px;
+}
+
+.youtube-player-container .player-nav-btn.next {
+  right: -20px;
+}
+
+@media (max-width: 767px) {
+  .youtube-player-container .player-nav-btn {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+  }
+
+  .youtube-player-container .player-nav-btn.prev {
+    left: -15px;
+  }
+
+  .youtube-player-container .player-nav-btn.next {
+    right: -15px;
+  }
+}
+
+@media (max-width: 575px) {
+  .youtube-player-container #youtube-playlist-player {
+    min-height: 150px;
+  }
+
+  .youtube-player-container .player-nav-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+
+  .youtube-player-container .player-nav-btn.prev {
+    left: -10px;
+  }
+
+  .youtube-player-container .player-nav-btn.next {
+    right: -10px;
+  }
+}
+
+#bio h2 {
+  font-family: "Cal Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #be3d2a;
+}
+
+#bio hr {
+  border: #f5c45e 1px solid;
+  opacity: 1 !important;
+}
+
+#contact h2 {
+  font-family: "Cal Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #be3d2a;
+}
+
+.bio-text p {
+  padding-left: 2rem;
+}
+
+#contact h3 {
+  font-family: "Cal Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #be3d2a;
+}
+
+#bio h3 {
+  font-family: "Cal Sans", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  color: #be3d2a;
+}
+
+.montserrat {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+#bio .bio-image {
+  border: 5px solid #eee;
+}
+
+#bio #testimonialCarousel .carousel-inner {
+  padding: 0 40px;
+}
+
+#bio #testimonialCarousel .blockquote {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 1rem;
+}
+
+#bio #testimonialCarousel .blockquote-footer {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+#bio #testimonialCarousel .carousel-item {
+  padding-bottom: 40px;
+}
+
+/* --- Styles for Modified Bio Section --- */
+
+#bio {
+  padding: 0; /* Remove default section padding */
+  overflow: hidden; /* Prevent potential overflow issues */
+  background-color: #081729; /* Or your desired background for the text area */
+  color: #ffffff;
+}
+
+/* Style the column holding the text content */
+.bio-content-column {
+  /* Padding is added via utility classes in HTML (p-md-5 etc.) */
+  /* Ensure text doesn't overlap image on very small screens if needed */
+}
+
+/* Style the column that will contain the full-height image */
+.bio-image-column {
+  position: relative; /* Needed for absolute positioning of the image if used */
+  min-height: 574px;
+  background-color: #081729; /* Fallback color while image loads */
+}
+
+/* Style the image itself */
+.bio-full-height-image {
+  display: block; /* Remove extra space below image */
+  width: 100%; /* Make image fill its column width */
+  height: 100%; /* Make image fill its column height */
+  object-fit: cover; /* Cover the area, cropping if necessary, maintains aspect ratio */
+  object-position: bottom; /* Center the image within its frame */
+}
+
+/* Ensure the row itself takes up space */
+#bio > .row {
+  /* align-items-stretch (added in HTML) makes columns equal height */
+}
+
+/* --- Adjustments for Testimonial Carousel within the new layout --- */
+#bio #testimonialCarousel {
+  /* You might need to adjust margins or padding for the carousel */
+  /* Example: remove horizontal padding if the column handles it */
+  padding-left: 0;
+  padding-right: 0;
+}
+
+#bio #testimonialCarousel .carousel-inner {
+  /* Inner padding might still be desired for text */
+  padding: 0 15px; /* Adjust as needed */
+}
+
+#bio #testimonialCarousel .carousel-item {
+  padding-bottom: 50px; /* Ensure space for indicators */
+}
+
+#bio #testimonialCarousel .carousel-indicators {
+  bottom: 0; /* Adjust position relative to carousel item padding */
+  /* Reset Bootstrap default margin */
+  margin-right: 0;
+  margin-left: 0;
+}
+
+/* Optional: Adjust carousel control positions */
+#bio #testimonialCarousel .carousel-control-prev,
+#bio #testimonialCarousel .carousel-control-next {
+  width: 5%; /* Make controls smaller */
+  color: #fff !important;
+  /* Inline styles were used in HTML example, can be moved here */
+}
+#bio #testimonialCarousel .carousel-control-prev {
+  left: -5%;
+} /* Adjust position */
+#bio #testimonialCarousel .carousel-control-next {
+  right: -5%;
+} /* Adjust position */
+
+/* --- Remove potentially conflicting old styles --- */
+/* Remove the border added previously directly to the image */
+/* #bio .bio-image {
+  border: none; /* Remove the old border
+} */
+/* Remove specific padding from #testimonialCarousel .carousel-inner if column padding is sufficient */
+/* #bio #testimonialCarousel .carousel-inner {
+   padding: 0;
+} */
+
+/* --- Responsive adjustments --- */
+@media (max-width: 991.98px) {
+  /* Below LG breakpoint (where columns stack) */
+  .bio-image-column {
+    /* The image column will stack below text due to default order */
+    /* You might want a specific height or aspect ratio */
+    min-height: 300px;
+    max-height: 60vh; /* Example: Limit height on mobile */
+  }
+
+  .bio-full-height-image {
+    object-position: center top; /* Adjust focus when stacked */
+  }
+
+  /* Readjust carousel control positions for stacked layout */
+  #bio #testimonialCarousel .carousel-control-prev {
+    left: -15px;
+  }
+  #bio #testimonialCarousel .carousel-control-next {
+    right: -15px;
+  }
+}
+
+.bio-image-column {
+  position: relative;
+  min-height: 400px;
+  background-color: #081729; /* Fallback */
+}
+
+.bio-full-height-image {
+  display: block; /* Make the img tag work */
+  width: 100%; /* Fill the column */
+  height: 100%; /* Fill the column */
+  object-fit: cover; /* Cover the area */
+  object-position: left top; /* Center the image */
+}
+
+.footer-section {
+  background-color: #081729;
+}
+
+@media (max-width: 991.98px) {
+  .bio-image-column {
+    min-height: 300px; /* Adjust height for smaller screens if needed */
+  }
+}
