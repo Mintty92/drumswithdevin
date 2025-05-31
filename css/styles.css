@@ -1,10 +1,10 @@
-/* SCSS/styles.scss */
+/* Custom Styles for Drum Lessons Website */
 :root {
-  --navbar-height: 60px; /* Define your navbar height here */
+  --navbar-height: 60px;
 }
 
 body {
-  font-family: "Arial", sans-serif;
+  font-family: "PT Sans", sans-serif;
 }
 
 h1,
@@ -13,24 +13,26 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Georgia", serif;
-}
-
-.p-bold {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 700; /* Bold weight for all headings */
 }
 
 section {
   padding: 0px 0px;
 }
 
-.min-vh-100 {
-  min-height: calc(100vh - 60px);
+.min-vh-100-adjusted {
+  min-height: calc(100vh - var(--navbar-height)) !important;
 }
 
 .navbar {
   min-height: var(--navbar-height);
   background-color: #081729;
   color: #ffffff;
+}
+
+.navbar-brand {
+  font-weight: 700; /* Make navbar brand bold */
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -48,8 +50,10 @@ section {
   vertical-align: middle;
 }
 
-.min-vh-100 {
-  min-height: calc(100vh - var(--navbar-height)) !important;
+.navbar img {
+  height: 10%;
+  width: 10%;
+  margin-right: 1rem;
 }
 
 .btn-light {
@@ -64,9 +68,10 @@ section {
 .btn-light.active {
   color: #081729;
   background-color: #bf7a70;
-  border-color: #be3e2a79; /*set the color you want here*/
+  border-color: #be3e2a79;
 }
 
+/* Home Section */
 #home {
   height: 100vh;
   width: 100%;
@@ -77,7 +82,7 @@ section {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: rgb(97, 97, 97);
+  color: rgb(255, 255, 255);
 }
 
 #home img {
@@ -115,7 +120,7 @@ section {
   top: 0;
   left: 0;
   z-index: 7;
-  background: url("../media/texture.png");
+  background: url("../media/texture.png"); /* Ensure this path is relative to your CSS file or root */
 }
 
 #home .container {
@@ -128,100 +133,126 @@ section {
   padding-right: 15px;
 }
 
-#home p {
+#home .lead {
   padding-top: 15px;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
-.move-up {
-  margin-top: -5px;
+#home .lead.subtitle {
+  margin-top: -20px;
 }
 
-#bio .img-fluid.rounded-circle {
-  border: 5px solid #eee;
+/* Bio Section */
+#bio {
+  padding: 0;
+  overflow: hidden;
+  background-color: #081729;
+  color: #ffffff;
 }
 
-#videos iframe {
-  border: 2px solid #be3d2a;
-}
-
-#videos {
-  background-color: #f5c45e;
-}
-
-#videos h1 {
-  font-family: "Cal Sans", sans-serif;
-  font-weight: 400;
+#bio h2,
+#bio h3 {
   font-style: normal;
   color: #be3d2a;
 }
 
-#contact .social-icons-contact a {
-  transition: color 0.2s ease-in-out;
+.bio-image-column {
+  position: relative;
+  min-height: 574px;
+  background-color: #081729;
 }
 
-#contact .social-icons-contact a:hover {
-  color: var(--bs-primary) !important;
+.bio-full-height-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
 }
 
-footer .social-icons-footer a {
-  font-size: 1.3rem;
-  transition: color 0.2s ease-in-out;
+.bio-text p {
+  padding-left: 0.8rem;
 }
 
-footer .social-icons-footer a:hover {
-  color: #ccc !important;
+#bio hr {
+  border: #f5c45e 1px solid;
+  opacity: 1 !important;
 }
 
-@media (min-width: 768px) {
-  section {
-    padding: 80px 0;
-  }
-
-  #home h1 {
-    font-size: 4rem;
-  }
-
-  #bio .p-md-5 {
-    padding: 1rem !important;
-  }
+/* Testimonial Carousel Styling */
+#bio #testimonialCarousel {
+  position: relative;
 }
 
-#contactForm input {
-  -webkit-border-radius: 0 !important;
-  -moz-border-radius: 0 !important;
-  border-radius: 0 !important;
+#bio #testimonialCarousel .carousel-item.active {
+  height: 270px;
+  display: flex;
+  flex-direction: column;
 }
 
-#contactForm textarea {
-  -webkit-border-radius: 0 !important;
-  -moz-border-radius: 0 !important;
-  border-radius: 0 !important;
+#bio #testimonialCarousel .carousel-item figure {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
 }
 
-@media (min-width: 992px) {
-  section {
-    padding: 100px 0;
-  }
+#bio #testimonialCarousel .blockquote {
+  flex-grow: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.5rem;
+}
 
-  #home h1 {
-    font-size: 5rem;
-  }
+#bio #testimonialCarousel .blockquote p {
+  width: 100%;
+  margin-bottom: 0;
+  line-height: 1.35;
+}
 
-  .bio-content-column {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+#bio #testimonialCarousel .blockquote-footer {
+  font-size: 0.9rem;
+  color: #adb5bd;
+  flex-shrink: 0;
+  margin-top: 0.5rem;
+}
 
-  .bio-container {
-    max-width: 640px;
-  }
+#bio #testimonialCarousel .carousel-indicators {
+  bottom: -25px;
+}
+
+#bio #testimonialCarousel .carousel-control-prev-icon,
+#bio #testimonialCarousel .carousel-control-next-icon {
+  filter: brightness(0) invert(1);
+}
+
+#bio #testimonialCarousel .carousel-control-prev {
+  left: -5%;
+}
+#bio #testimonialCarousel .carousel-control-next {
+  right: -5%;
+}
+
+/* Videos Section */
+#videos {
+  background-color: #e78b48;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+
+#videos h1 {
+  font-style: normal;
+  color: #081729;
 }
 
 .youtube-player-container #youtube-playlist-player {
   min-height: 200px;
   background-color: #eee;
   width: 100%;
+  border: 2px solid #be3d2a;
 }
 
 .youtube-player-container .player-nav-btn {
@@ -239,12 +270,14 @@ footer .social-icons-footer a:hover {
   font-size: 1.2rem;
   opacity: 0.7;
   transition: opacity 0.2s ease, background-color 0.2s ease;
+  background-color: #343a40;
+  color: #fff;
 }
 
 .youtube-player-container .player-nav-btn:hover {
   opacity: 1;
-  background-color: var(--bs-primary);
-  border-color: var(--bs-primary);
+  background-color: #be3d2a;
+  border-color: #be3d2a;
 }
 
 .youtube-player-container .player-nav-btn.prev {
@@ -255,208 +288,140 @@ footer .social-icons-footer a:hover {
   right: -20px;
 }
 
+/* Contact Section */
+#contact {
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+#contact h2,
+#contact h3 {
+  font-style: normal;
+  color: #be3d2a;
+}
+
+#contact .social-icons-contact a {
+  transition: color 0.2s ease-in-out;
+}
+
+#contact .social-icons-contact a:hover {
+  color: var(--bs-primary) !important;
+}
+
+#contactForm input,
+#contactForm textarea {
+  border-radius: 0 !important;
+}
+
+/* Footer */
+.footer-section {
+  background-color: #081729;
+}
+
+footer .social-icons-footer a {
+  font-size: 1.3rem;
+  transition: color 0.2s ease-in-out;
+}
+
+footer .social-icons-footer a:hover {
+  color: #ccc !important;
+}
+
+/* Custom Styles for Success Modal */
+.modal-content {
+  background-color: #081729; /* Your site's bluish background */
+  color: #ffffff; /* White text for the modal content */
+  border: 1px solid #be3e2a62; /* Optional: border with your accent color */
+}
+
+.modal-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Lighter border for the header */
+}
+
+.modal-title {
+  font-size: 1.75rem; /* Larger title text - adjust as needed */
+  color: #ffffff; /* Ensure title is white */
+}
+
+.modal-body {
+  font-size: 1.15rem; /* Larger body text - adjust as needed */
+}
+
+/* Style the close button (X) in the header to be more visible on dark background */
+.modal-header .btn-close {
+  filter: invert(1) grayscale(100%) brightness(200%); /* Makes it white */
+}
+
+/* Style the "Okay" button in the footer */
+.modal-footer .btn {
+  /* Targets any button in the modal footer */
+  background-color: #be3d2a; /* Your site's button orange/red */
+  color: #ffffff; /* White text */
+  border-color: #be3e2a79; /* Subtle border color from your theme */
+  padding: 0.5rem 1.5rem; /* Adjust padding as needed */
+  font-size: 1rem; /* Adjust font size as needed */
+  border-radius: 0 !important; /* Matches your form input style if desired */
+}
+
+.modal-footer .btn:hover,
+.modal-footer .btn:focus,
+.modal-footer .btn:active {
+  background-color: #bf7a70; /* Your button hover background color */
+  color: #ffffff; /* Keep text white on hover, or change to #081729 if you prefer */
+  border-color: #be3e2a79; /* Keep same border color */
+}
+
+.modal-footer {
+  border-top: 1px solid rgba(255, 255, 255, 0.2); /* Lighter border for the footer */
+}
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+  .navbar img {
+    height: 5%;
+    width: 5%;
+  }
+
+  section:not(#home):not(#bio) {
+    padding-top: 80px;
+    padding-bottom: 80px;
+  }
+  #bio .p-md-5 {
+    padding: 3rem !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .navbar img {
+    height: 5%;
+    width: 5%;
+  }
+
+  section:not(#home):not(#bio) {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+  .bio-content-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .bio-container {
+    max-width: 640px;
+  }
+}
+
 @media (max-width: 767px) {
   .youtube-player-container .player-nav-btn {
     width: 35px;
     height: 35px;
     font-size: 1rem;
   }
-
   .youtube-player-container .player-nav-btn.prev {
     left: -15px;
   }
-
   .youtube-player-container .player-nav-btn.next {
     right: -15px;
   }
-}
-
-@media (max-width: 575px) {
-  .youtube-player-container #youtube-playlist-player {
-    min-height: 150px;
-  }
-
-  .youtube-player-container .player-nav-btn {
-    width: 30px;
-    height: 30px;
-    font-size: 0.9rem;
-  }
-
-  .youtube-player-container .player-nav-btn.prev {
-    left: -10px;
-  }
-
-  .youtube-player-container .player-nav-btn.next {
-    right: -10px;
-  }
-}
-
-#bio h2 {
-  font-family: "Cal Sans", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: #be3d2a;
-}
-
-#bio hr {
-  border: #f5c45e 1px solid;
-  opacity: 1 !important;
-}
-
-#contact h2 {
-  font-family: "Cal Sans", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: #be3d2a;
-}
-
-.bio-text p {
-  padding-left: 2rem;
-}
-
-#contact h3 {
-  font-family: "Cal Sans", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: #be3d2a;
-}
-
-#bio h3 {
-  font-family: "Cal Sans", sans-serif;
-  font-weight: 400;
-  font-style: normal;
-  color: #be3d2a;
-}
-
-.montserrat {
-  font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-}
-
-#bio .bio-image {
-  border: 5px solid #eee;
-}
-
-#bio #testimonialCarousel .carousel-inner {
-  padding: 0 40px;
-}
-
-#bio #testimonialCarousel .blockquote {
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 1rem;
-}
-
-#bio #testimonialCarousel .blockquote-footer {
-  font-size: 0.9rem;
-  color: #6c757d;
-}
-
-#bio #testimonialCarousel .carousel-item {
-  padding-bottom: 40px;
-}
-
-/* --- Styles for Modified Bio Section --- */
-
-#bio {
-  padding: 0; /* Remove default section padding */
-  overflow: hidden; /* Prevent potential overflow issues */
-  background-color: #081729; /* Or your desired background for the text area */
-  color: #ffffff;
-}
-
-/* Style the column holding the text content */
-.bio-content-column {
-  /* Padding is added via utility classes in HTML (p-md-5 etc.) */
-  /* Ensure text doesn't overlap image on very small screens if needed */
-}
-
-/* Style the column that will contain the full-height image */
-.bio-image-column {
-  position: relative; /* Needed for absolute positioning of the image if used */
-  min-height: 574px;
-  background-color: #081729; /* Fallback color while image loads */
-}
-
-/* Style the image itself */
-.bio-full-height-image {
-  display: block; /* Remove extra space below image */
-  width: 100%; /* Make image fill its column width */
-  height: 100%; /* Make image fill its column height */
-  object-fit: cover; /* Cover the area, cropping if necessary, maintains aspect ratio */
-  object-position: bottom; /* Center the image within its frame */
-}
-
-/* Ensure the row itself takes up space */
-#bio > .row {
-  /* align-items-stretch (added in HTML) makes columns equal height */
-}
-
-/* --- Adjustments for Testimonial Carousel within the new layout --- */
-#bio #testimonialCarousel {
-  /* You might need to adjust margins or padding for the carousel */
-  /* Example: remove horizontal padding if the column handles it */
-  padding-left: 0;
-  padding-right: 0;
-}
-
-#bio #testimonialCarousel .carousel-inner {
-  /* Inner padding might still be desired for text */
-  padding: 0 15px; /* Adjust as needed */
-}
-
-#bio #testimonialCarousel .carousel-item {
-  padding-bottom: 50px; /* Ensure space for indicators */
-}
-
-#bio #testimonialCarousel .carousel-indicators {
-  bottom: 0; /* Adjust position relative to carousel item padding */
-  /* Reset Bootstrap default margin */
-  margin-right: 0;
-  margin-left: 0;
-}
-
-/* Optional: Adjust carousel control positions */
-#bio #testimonialCarousel .carousel-control-prev,
-#bio #testimonialCarousel .carousel-control-next {
-  width: 5%; /* Make controls smaller */
-  color: #fff !important;
-  /* Inline styles were used in HTML example, can be moved here */
-}
-#bio #testimonialCarousel .carousel-control-prev {
-  left: -5%;
-} /* Adjust position */
-#bio #testimonialCarousel .carousel-control-next {
-  right: -5%;
-} /* Adjust position */
-
-/* --- Remove potentially conflicting old styles --- */
-/* Remove the border added previously directly to the image */
-/* #bio .bio-image {
-  border: none; /* Remove the old border
-} */
-/* Remove specific padding from #testimonialCarousel .carousel-inner if column padding is sufficient */
-/* #bio #testimonialCarousel .carousel-inner {
-   padding: 0;
-} */
-
-/* --- Responsive adjustments --- */
-@media (max-width: 991.98px) {
-  /* Below LG breakpoint (where columns stack) */
-  .bio-image-column {
-    /* The image column will stack below text due to default order */
-    /* You might want a specific height or aspect ratio */
-    min-height: 300px;
-    max-height: 60vh; /* Example: Limit height on mobile */
-  }
-
-  .bio-full-height-image {
-    object-position: center top; /* Adjust focus when stacked */
-  }
-
-  /* Readjust carousel control positions for stacked layout */
   #bio #testimonialCarousel .carousel-control-prev {
     left: -15px;
   }
@@ -465,27 +430,30 @@ footer .social-icons-footer a:hover {
   }
 }
 
-.bio-image-column {
-  position: relative;
-  min-height: 400px;
-  background-color: #081729; /* Fallback */
-}
-
-.bio-full-height-image {
-  display: block; /* Make the img tag work */
-  width: 100%; /* Fill the column */
-  height: 100%; /* Fill the column */
-  object-fit: cover; /* Cover the area */
-  object-position: left top; /* Center the image */
-}
-
-.footer-section {
-  background-color: #081729;
+@media (max-width: 575px) {
+  .youtube-player-container #youtube-playlist-player {
+    min-height: 150px;
+  }
+  .youtube-player-container .player-nav-btn {
+    width: 30px;
+    height: 30px;
+    font-size: 0.9rem;
+  }
+  .youtube-player-container .player-nav-btn.prev {
+    left: -10px;
+  }
+  .youtube-player-container .player-nav-btn.next {
+    right: -10px;
+  }
 }
 
 @media (max-width: 991.98px) {
   .bio-image-column {
-    min-height: 300px; /* Adjust height for smaller screens if needed */
+    min-height: 300px;
+    max-height: 60vh;
+  }
+  .bio-full-height-image {
+    object-position: center top;
   }
 }
 
@@ -497,21 +465,19 @@ footer .social-icons-footer a:hover {
 
 @media (max-height: 650px) {
   #home img {
-    /* Make it a bit smaller on short screens if needed */
     max-width: 12vmin;
     min-width: 60px;
   }
   #home p.lead {
-    font-size: 0.9rem; /* Example: slightly smaller text */
+    font-size: 0.9rem;
     margin-top: 10px;
   }
-  #home p.lead + p.lead {
-    /* Target the second paragraph */
-    margin-top: -15px; /* Adjust spacing */
+  #home p.lead.subtitle {
+    margin-top: -15px;
   }
   #home .btn {
-    padding: 0.4rem 0.8rem; /* Example: smaller button padding */
-    font-size: 0.9rem; /* Example: smaller button text */
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
   }
 }
 
@@ -524,15 +490,15 @@ footer .social-icons-footer a:hover {
     font-size: 0.8rem;
     margin-top: 5px;
   }
-  #home p.lead + p.lead {
+  #home p.lead.subtitle {
     margin-top: -10px;
   }
   #home .btn {
-    margin-top: 10px !important; /* Push button down slightly */
+    margin-top: 10px !important;
     padding: 0.3rem 0.6rem;
     font-size: 0.8rem;
   }
   #home .container {
-    padding-bottom: 15px; /* Reduce bottom padding */
+    padding-bottom: 15px;
   }
 }
