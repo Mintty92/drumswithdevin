@@ -256,13 +256,29 @@ $(document).ready(function () {
     successModalInstance = new bootstrap.Modal(successModalElement);
   }
 
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(String(email).toLowerCase());
+  }
+
   if (contactForm.length && successModalInstance) {
     contactForm.on("submit", function (event) {
       event.preventDefault();
 
       const form = $(this);
+      const emailField = form.find("#contactEmail"); // Get the email field
+      const emailValue = emailField.val();
       const submitButton = form.find('button[type="submit"]');
       const originalButtonText = submitButton.text();
+
+      if (!emailValue || !isValidEmail(emailValue)) {
+        $("#successModalLabel").text("Invalid Email");
+        $("#successModalBody").text(
+          "Please enter a valid email address (e.g., name@example.com)."
+        );
+        successModalInstance.show();
+        return;
+      }
 
       submitButton.prop("disabled", true).text("Sending...");
 
@@ -270,19 +286,16 @@ $(document).ready(function () {
         url: form.attr("action"),
         method: "POST",
         data: form.serialize(),
-        dataType: "json", // Formspree will send JSON back if 'Accept' header is set
+        dataType: "json",
         beforeSend: function (xhr) {
           xhr.setRequestHeader("Accept", "application/json");
         },
         success: function (response) {
           console.log("Formspree Success:", response);
-
           $("#successModalLabel").text("Thank You!");
-          // You can customize this message further if Formspree's response includes useful info
           $("#successModalBody").text(
             "Your message has been sent successfully."
           );
-
           successModalInstance.show();
           form[0].reset();
         },
@@ -295,7 +308,6 @@ $(document).ready(function () {
           );
           let errorMessage =
             "Sorry, there was an issue sending your message. Please try again later.";
-
           if (jqXHR.responseJSON) {
             if (jqXHR.responseJSON.error) {
               errorMessage = jqXHR.responseJSON.error;
@@ -303,23 +315,20 @@ $(document).ready(function () {
               jqXHR.responseJSON.errors &&
               jqXHR.responseJSON.errors.length > 0
             ) {
-              // Formspree can return an array of error objects
               errorMessage = jqXHR.responseJSON.errors
                 .map(err => err.message || `${err.field}: ${err.code}`)
                 .join(", ");
             }
           } else if (jqXHR.responseText) {
-            // Fallback for non-JSON errors, though Formspree usually sends JSON errors
             try {
               const parsedError = JSON.parse(jqXHR.responseText);
               if (parsedError && (parsedError.error || parsedError.message)) {
                 errorMessage = parsedError.error || parsedError.message;
               }
             } catch (e) {
-              console.warn("Could not parse error responseText as JSON.");
+              /* Silently ignore if not JSON */
             }
           }
-
           $("#successModalLabel").text("Submission Error");
           $("#successModalBody").text(errorMessage);
           successModalInstance.show();
