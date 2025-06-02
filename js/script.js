@@ -246,84 +246,98 @@ if (testimonialCarouselElement) {
 //   }
 // });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const contactForm = document.getElementById("contactForm");
+// --- Form Submission with FormSubmit.co using jQuery AJAX ---
+// This will run after the DOM is fully loaded.
+$(document).ready(function () {
+  const contactForm = $("#contactForm"); // jQuery selector
   const successModalElement = document.getElementById("successModal");
-  let successModal;
+  let successModalInstance;
 
   if (successModalElement) {
-    successModal = new bootstrap.Modal(successModalElement);
+    successModalInstance = new bootstrap.Modal(successModalElement);
   }
 
-  if (contactForm) {
-    contactForm.addEventListener("submit", function (event) {
-      event.preventDefault(); // Prevent the default page refresh
+  if (contactForm.length && successModalInstance) {
+    // Check if form and modal exist
+    contactForm.on("submit", function (event) {
+      event.preventDefault(); // Prevent default form submission
 
-      // --- Backend Submission (Cloudflare Worker / PHP) would happen here ---
-      // For now, we'll simulate a successful submission.
-      // In a real scenario, you would use fetch() to send data to your backend.
-      // Example with fetch to a Cloudflare Worker (you'll build this later):
-      /*
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData.entries());
+      const form = $(this);
+      const submitButton = form.find('button[type="submit"]');
+      const originalButtonText = submitButton.text();
 
-            fetch('/api/submit-form', { // Replace with your Cloudflare Worker endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    // Handle server errors (e.g., show an error message)
-                    // For now, we'll assume success even if the server fails,
-                    // but in a real app, you'd want robust error handling.
-                    console.error('Form submission error:', response.statusText);
-                    // Potentially show a different modal for errors
-                    throw new Error('Network response was not ok.');
-                }
-                return response.json(); // Or response.text() depending on what your worker returns
-            })
-            .then(result => {
-                console.log('Success:', result); // Log success response from server
+      // Disable button and show loading state
+      submitButton.prop("disabled", true).text("Sending...");
 
-                // Clear the form fields
-                contactForm.reset();
+      $.ajax({
+        url: form.attr("action"), // Get action URL from form
+        method: "POST",
+        data: form.serialize(), // Serialize form data
+        dataType: "json", // Expect JSON response from FormSubmit
+        beforeSend: function (xhr) {
+          // Required header for FormSubmit AJAX
+          xhr.setRequestHeader("Accept", "application/json");
+        },
+        success: function (response) {
+          console.log("FormSubmit Success:", response);
 
-                // Show the success modal
-                if (successModal) {
-                    successModal.show();
-                }
-            })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-                // Optionally, display an error message to the user in a different modal or an alert
-                alert('There was an error sending your message. Please try again.');
-            });
-            */
+          // Update modal content for success
+          $("#successModalLabel").text("Thank You!"); // Assuming your modal title has id="successModalLabel"
+          $("#successModalBody").text(
+            "Your message has been sent successfully."
+          ); // Assuming modal body has id="successModalBody"
 
-      // --- Simulation for now ---
-      console.log("Form submitted (simulated)");
-      // Clear the form fields
-      contactForm.reset();
-      // Show the success modal
-      if (successModal) {
-        successModal.show();
-      }
-      // --- End Simulation ---
+          successModalInstance.show(); // Show the Bootstrap modal
+          form[0].reset(); // Reset the form fields
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.error(
+            "FormSubmit Error:",
+            textStatus,
+            errorThrown,
+            jqXHR.responseText
+          );
+          let errorMessage =
+            "Sorry, there was an issue sending your message. Please try again later.";
+          if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+            errorMessage = jqXHR.responseJSON.message;
+          } else if (jqXHR.responseText) {
+            try {
+              const parsedError = JSON.parse(jqXHR.responseText);
+              if (parsedError && parsedError.message) {
+                errorMessage = parsedError.message;
+              }
+            } catch (e) {
+              console.warn("Could not parse error responseText as JSON.");
+            }
+          }
+
+          // Update modal content for error
+          $("#successModalLabel").text("Submission Error");
+          $("#successModalBody").text(errorMessage);
+
+          successModalInstance.show(); // Show the Bootstrap modal
+        },
+        complete: function () {
+          // Re-enable button and restore original text
+          submitButton.prop("disabled", false).text(originalButtonText);
+        },
+      });
     });
+  } else {
+    if (!contactForm.length) {
+      console.warn("Contact form with ID #contactForm not found.");
+    }
+    if (!successModalInstance) {
+      console.warn(
+        "Success modal with ID #successModal not found or failed to initialize."
+      );
+    }
   }
-
-  // Optional: Set current year in footer
-  const currentYearSpan = document.getElementById("currentYear");
-  if (currentYearSpan) {
-    currentYearSpan.textContent = new Date().getFullYear();
-  }
-
-  // Your existing YouTube player and other JS can remain here
-  // For example:
-  // var player;
-  // var playlistVideos = ['VIDEO_ID_1', 'VIDEO_ID_2', 'VIDEO_ID_3']; // Replace with your video IDs
-  // ... (rest of your YouTube JS)
 });
+
+// Note: The original vanilla JS DOMContentLoaded listener for form submission
+// has been replaced by the jQuery $(document).ready() function above for form handling.
+// Other initializations within your original DOMContentLoaded can remain if they don't conflict,
+// or be moved into the jQuery ready function if appropriate.
+// For this example, I've integrated the form submission logic completely within the jQuery ready block.
