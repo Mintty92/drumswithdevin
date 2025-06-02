@@ -246,84 +246,106 @@ if (testimonialCarouselElement) {
 //   }
 // });
 
-document.addEventListener("DOMContentLoaded", function () {
-  const contactForm = document.getElementById("contactForm");
+// --- Form Submission with Formspree using jQuery AJAX ---
+$(document).ready(function () {
+  const contactForm = $("#contactForm");
   const successModalElement = document.getElementById("successModal");
-  let successModal;
+  let successModalInstance;
 
   if (successModalElement) {
-    successModal = new bootstrap.Modal(successModalElement);
+    successModalInstance = new bootstrap.Modal(successModalElement);
   }
 
-  if (contactForm) {
-    contactForm.addEventListener("submit", function (event) {
-      event.preventDefault(); // Prevent the default page refresh
+  function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(String(email).toLowerCase());
+  }
 
-      // --- Backend Submission (Cloudflare Worker / PHP) would happen here ---
-      // For now, we'll simulate a successful submission.
-      // In a real scenario, you would use fetch() to send data to your backend.
-      // Example with fetch to a Cloudflare Worker (you'll build this later):
-      /*
-            const formData = new FormData(contactForm);
-            const data = Object.fromEntries(formData.entries());
+  if (contactForm.length && successModalInstance) {
+    contactForm.on("submit", function (event) {
+      event.preventDefault();
 
-            fetch('/api/submit-form', { // Replace with your Cloudflare Worker endpoint
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            })
-            .then(response => {
-                if (!response.ok) {
-                    // Handle server errors (e.g., show an error message)
-                    // For now, we'll assume success even if the server fails,
-                    // but in a real app, you'd want robust error handling.
-                    console.error('Form submission error:', response.statusText);
-                    // Potentially show a different modal for errors
-                    throw new Error('Network response was not ok.');
-                }
-                return response.json(); // Or response.text() depending on what your worker returns
-            })
-            .then(result => {
-                console.log('Success:', result); // Log success response from server
+      const form = $(this);
+      const emailField = form.find("#contactEmail"); // Get the email field
+      const emailValue = emailField.val();
+      const submitButton = form.find('button[type="submit"]');
+      const originalButtonText = submitButton.text();
 
-                // Clear the form fields
-                contactForm.reset();
-
-                // Show the success modal
-                if (successModal) {
-                    successModal.show();
-                }
-            })
-            .catch(error => {
-                console.error('Error submitting form:', error);
-                // Optionally, display an error message to the user in a different modal or an alert
-                alert('There was an error sending your message. Please try again.');
-            });
-            */
-
-      // --- Simulation for now ---
-      console.log("Form submitted (simulated)");
-      // Clear the form fields
-      contactForm.reset();
-      // Show the success modal
-      if (successModal) {
-        successModal.show();
+      if (!emailValue || !isValidEmail(emailValue)) {
+        $("#successModalLabel").text("Invalid Email");
+        $("#successModalBody").text(
+          "Please enter a valid email address (e.g., name@example.com)."
+        );
+        successModalInstance.show();
+        return;
       }
-      // --- End Simulation ---
+
+      submitButton.prop("disabled", true).text("Sending...");
+
+      $.ajax({
+        url: form.attr("action"),
+        method: "POST",
+        data: form.serialize(),
+        dataType: "json",
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader("Accept", "application/json");
+        },
+        success: function (response) {
+          console.log("Formspree Success:", response);
+          $("#successModalLabel").text("Thank You!");
+          $("#successModalBody").text(
+            "Your message has been sent successfully."
+          );
+          successModalInstance.show();
+          form[0].reset();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.error(
+            "Formspree Error:",
+            textStatus,
+            errorThrown,
+            jqXHR.responseText
+          );
+          let errorMessage =
+            "Sorry, there was an issue sending your message. Please try again later.";
+          if (jqXHR.responseJSON) {
+            if (jqXHR.responseJSON.error) {
+              errorMessage = jqXHR.responseJSON.error;
+            } else if (
+              jqXHR.responseJSON.errors &&
+              jqXHR.responseJSON.errors.length > 0
+            ) {
+              errorMessage = jqXHR.responseJSON.errors
+                .map(err => err.message || `${err.field}: ${err.code}`)
+                .join(", ");
+            }
+          } else if (jqXHR.responseText) {
+            try {
+              const parsedError = JSON.parse(jqXHR.responseText);
+              if (parsedError && (parsedError.error || parsedError.message)) {
+                errorMessage = parsedError.error || parsedError.message;
+              }
+            } catch (e) {
+              /* Silently ignore if not JSON */
+            }
+          }
+          $("#successModalLabel").text("Submission Error");
+          $("#successModalBody").text(errorMessage);
+          successModalInstance.show();
+        },
+        complete: function () {
+          submitButton.prop("disabled", false).text(originalButtonText);
+        },
+      });
     });
+  } else {
+    if (!contactForm.length) {
+      console.warn("Contact form with ID #contactForm not found.");
+    }
+    if (!successModalInstance) {
+      console.warn(
+        "Success modal with ID #successModal not found or failed to initialize."
+      );
+    }
   }
-
-  // Optional: Set current year in footer
-  const currentYearSpan = document.getElementById("currentYear");
-  if (currentYearSpan) {
-    currentYearSpan.textContent = new Date().getFullYear();
-  }
-
-  // Your existing YouTube player and other JS can remain here
-  // For example:
-  // var player;
-  // var playlistVideos = ['VIDEO_ID_1', 'VIDEO_ID_2', 'VIDEO_ID_3']; // Replace with your video IDs
-  // ... (rest of your YouTube JS)
 });
