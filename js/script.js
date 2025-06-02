@@ -246,10 +246,9 @@ if (testimonialCarouselElement) {
 //   }
 // });
 
-// --- Form Submission with FormSubmit.co using jQuery AJAX ---
-// This will run after the DOM is fully loaded.
+// --- Form Submission with Formspree using jQuery AJAX ---
 $(document).ready(function () {
-  const contactForm = $("#contactForm"); // jQuery selector
+  const contactForm = $("#contactForm");
   const successModalElement = document.getElementById("successModal");
   let successModalInstance;
 
@@ -258,68 +257,74 @@ $(document).ready(function () {
   }
 
   if (contactForm.length && successModalInstance) {
-    // Check if form and modal exist
     contactForm.on("submit", function (event) {
-      event.preventDefault(); // Prevent default form submission
+      event.preventDefault();
 
       const form = $(this);
       const submitButton = form.find('button[type="submit"]');
       const originalButtonText = submitButton.text();
 
-      // Disable button and show loading state
       submitButton.prop("disabled", true).text("Sending...");
 
       $.ajax({
-        url: form.attr("action"), // Get action URL from form
+        url: form.attr("action"),
         method: "POST",
-        data: form.serialize(), // Serialize form data
-        dataType: "json", // Expect JSON response from FormSubmit
+        data: form.serialize(),
+        dataType: "json", // Formspree will send JSON back if 'Accept' header is set
         beforeSend: function (xhr) {
-          // Required header for FormSubmit AJAX
           xhr.setRequestHeader("Accept", "application/json");
         },
         success: function (response) {
-          console.log("FormSubmit Success:", response);
+          console.log("Formspree Success:", response);
 
-          // Update modal content for success
-          $("#successModalLabel").text("Thank You!"); // Assuming your modal title has id="successModalLabel"
+          $("#successModalLabel").text("Thank You!");
+          // You can customize this message further if Formspree's response includes useful info
           $("#successModalBody").text(
             "Your message has been sent successfully."
-          ); // Assuming modal body has id="successModalBody"
+          );
 
-          successModalInstance.show(); // Show the Bootstrap modal
-          form[0].reset(); // Reset the form fields
+          successModalInstance.show();
+          form[0].reset();
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.error(
-            "FormSubmit Error:",
+            "Formspree Error:",
             textStatus,
             errorThrown,
             jqXHR.responseText
           );
           let errorMessage =
             "Sorry, there was an issue sending your message. Please try again later.";
-          if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-            errorMessage = jqXHR.responseJSON.message;
+
+          if (jqXHR.responseJSON) {
+            if (jqXHR.responseJSON.error) {
+              errorMessage = jqXHR.responseJSON.error;
+            } else if (
+              jqXHR.responseJSON.errors &&
+              jqXHR.responseJSON.errors.length > 0
+            ) {
+              // Formspree can return an array of error objects
+              errorMessage = jqXHR.responseJSON.errors
+                .map(err => err.message || `${err.field}: ${err.code}`)
+                .join(", ");
+            }
           } else if (jqXHR.responseText) {
+            // Fallback for non-JSON errors, though Formspree usually sends JSON errors
             try {
               const parsedError = JSON.parse(jqXHR.responseText);
-              if (parsedError && parsedError.message) {
-                errorMessage = parsedError.message;
+              if (parsedError && (parsedError.error || parsedError.message)) {
+                errorMessage = parsedError.error || parsedError.message;
               }
             } catch (e) {
               console.warn("Could not parse error responseText as JSON.");
             }
           }
 
-          // Update modal content for error
           $("#successModalLabel").text("Submission Error");
           $("#successModalBody").text(errorMessage);
-
-          successModalInstance.show(); // Show the Bootstrap modal
+          successModalInstance.show();
         },
         complete: function () {
-          // Re-enable button and restore original text
           submitButton.prop("disabled", false).text(originalButtonText);
         },
       });
@@ -335,9 +340,3 @@ $(document).ready(function () {
     }
   }
 });
-
-// Note: The original vanilla JS DOMContentLoaded listener for form submission
-// has been replaced by the jQuery $(document).ready() function above for form handling.
-// Other initializations within your original DOMContentLoaded can remain if they don't conflict,
-// or be moved into the jQuery ready function if appropriate.
-// For this example, I've integrated the form submission logic completely within the jQuery ready block.
